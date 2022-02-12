@@ -26,6 +26,9 @@ client.on('messageCreate', msg => {
         case msg.content === commands.toEnglish.command:
             translateToEng(msg);
             break;
+        case msg.content.startsWith(commands.toEnglish.command):
+            translateToEng(msg);
+            break;
         default:
             return;
     }
