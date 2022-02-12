@@ -8,16 +8,15 @@ const getCommandList = (message) => {
 };
 
 const translateToEng = async(message) => {
-    if (message.type !== 'REPLY') {
-        message.channel.send('Command must be used within a Reply to another message');
-        return;
+    if (message.type === 'REPLY') {
+        const replyMessage = await message.channel.messages.fetch(message.reference.messageId);
+        const { text } = await translate(replyMessage.content, { to: 'en' });
+        message.channel.send(text);
+    } else {
+        const originMessage = message.content.split(15);
+        const { text } = await translate(originMessage, { to: 'en' });
+        message.channel.send(text);
     }
-
-    const replyMessage = await message.channel.messages.fetch(message.reference.messageId);
-
-    const { text } = await translate(replyMessage.content, { to: 'en' });
-    
-    message.channel.send(text);
 };
 
 module.exports = {
